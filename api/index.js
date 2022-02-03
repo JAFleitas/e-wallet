@@ -2,7 +2,7 @@ const app = require("./app");
 
 // traigo sequelize para levantar la base de datos
 
-const { sequelize } = require("./db");
+const { sequelize } = require("./db/index");
 
 const { PORT } = process.env;
 
