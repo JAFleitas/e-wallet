@@ -10,8 +10,16 @@ import {
   useColorModeValue,
   createIcon,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Hero: React.FC = () => {
+  const { loginWithRedirect } = useAuth0();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/homepage");
+  };
+
   return (
     <>
       <Container maxW={"3xl"}>
@@ -51,6 +59,7 @@ const Hero: React.FC = () => {
               _hover={{
                 bg: "blue.300",
               }}
+              onClick={() => handleClick()}
             >
               Get Started
             </Button>

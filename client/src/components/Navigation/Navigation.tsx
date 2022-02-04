@@ -24,10 +24,12 @@ import {
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navigation: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <Box>
@@ -84,7 +86,7 @@ const Navigation: React.FC = () => {
             fontSize={"sm"}
             fontWeight={400}
             variant={"link"}
-            href={"#"}
+            onClick={() => loginWithRedirect()}
           >
             Sign In
           </Button>
@@ -94,7 +96,7 @@ const Navigation: React.FC = () => {
             fontWeight={600}
             color={"white"}
             bg={"blue.400"}
-            href={"#"}
+            onClick={() => loginWithRedirect({screen_hint: "signup"})}
             _hover={{
               bg: "blue.300",
             }}
