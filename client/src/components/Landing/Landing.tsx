@@ -6,16 +6,14 @@ import Pricing from "../Pricing/Pricing";
 import Statistics from "../Statistics/Statistics";
 import Footer from "../Footer/Footer";
 
-const Landing: React.FC = () => {
-  return (
-    <React.Fragment>
-      <Navigation />
-      <Hero />
-      <Statistics />
-      <Pricing />
-      <Footer />
-    </React.Fragment>
-  );
-};
+const Landing: React.FC = () => (
+  <>
+    <Navigation />
+    <Hero />
+    <Statistics />
+    <Pricing />
+    <Footer />
+  </>
+);
 
 export default Landing;
