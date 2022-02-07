@@ -7,11 +7,11 @@ const { Sequelize, Op } = require("sequelize");
 // traemos los modelos
 const modelUser = require("../models/Users");
 const modelBalance = require("../models/Balance");
-const modelContacto = require("../models/Contacto");
-const modelDivisa = require("../models/Divisa");
-const modelHistorial = require("../models/Historial");
-const modelOperacion = require("../models/Operacion");
-const modelTarjeta = require("../models/Tarjeta");
+const modelContact = require("../models/Contact");
+const modelCurrency = require("../models/Currency");
+const modelHistory = require("../models/History");
+const modelOperation = require("../models/Operation");
+const modelCard = require("../models/Card");
 
 const sequelize =
   process.env.NODE_ENV === "production"
@@ -48,22 +48,22 @@ const sequelize =
 // inyeccion de modelos a sequelize
 modelUser(sequelize);
 modelBalance(sequelize);
-modelContacto(sequelize);
-modelDivisa(sequelize);
-modelHistorial(sequelize);
-modelOperacion(sequelize);
-modelTarjeta(sequelize);
-const { user, balance, contacto, divisa, operacion, tarjeta, historial } =
+modelContact(sequelize);
+modelCurrency(sequelize);
+modelHistory(sequelize);
+modelOperation(sequelize);
+modelCard(sequelize);
+const { user, balance, contact, currency, operation, card, history } =
   sequelize.models;
 // relacion de las tablas
-user.hasMany(operacion);
-operacion.belongsTo(user);
-user.belongsToMany(operacion, { through: "historial" });
-operacion.belongsToMany(user, { through: "historial" });
-user.hasMany(tarjeta);
-tarjeta.belongsTo(user);
-user.belongsToMany(divisa, { through: "balance" });
-divisa.belongsToMany(user, { through: "balance" });
+user.hasMany(operation);
+operation.belongsTo(user);
+user.belongsToMany(operation, { through: "history" });
+operation.belongsToMany(user, { through: "history" });
+user.hasMany(card);
+card.belongsTo(user);
+user.belongsToMany(currency, { through: "balance" });
+currency.belongsToMany(user, { through: "balance" });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
