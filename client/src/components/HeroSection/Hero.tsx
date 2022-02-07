@@ -10,15 +10,9 @@ import {
   useColorModeValue,
   createIcon,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
-  const { loginWithRedirect } = useAuth0();
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/homepage");
-  };
 
   return (
     <>
@@ -51,18 +45,19 @@ const Hero: React.FC = () => {
             alignSelf={"center"}
             position={"relative"}
           >
-            <Button
-              colorScheme={"green"}
-              color={"white"}
-              bg={"blue.400"}
-              px={7}
-              _hover={{
-                bg: "blue.300",
-              }}
-              onClick={() => handleClick()}
-            >
-              Get Started
-            </Button>
+            <Link to="/homepage">
+              <Button
+                colorScheme={"green"}
+                color={"white"}
+                bg={"blue.400"}
+                px={7}
+                _hover={{
+                  bg: "blue.300",
+                }}
+              >
+                Get Started
+              </Button>
+            </Link>
             <Button variant={"link"} colorScheme={"blue"} size={"sm"}>
               Learn more
             </Button>
