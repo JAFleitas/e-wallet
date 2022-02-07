@@ -8,11 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const { user } = require("../../db");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, username, email, password } = req.body;
-    const newUser = yield user.create({ name, username, email, password });
-    res.json(newUser);
+    try {
+        const { name, username, email, password } = req.body;
+        const passwordHash = yield bcrypt_1.default.hash(password, 10);
+        const newUser = yield user.create({
+            name,
+            username,
+            email,
+            password: passwordHash,
+        });
+        return res.json(newUser);
+    }
+    catch (error) {
+        console.log(error);
+        return res.sendStatus(500).send("Internal Error Server");
+    }
 });
 exports.default = createUser;

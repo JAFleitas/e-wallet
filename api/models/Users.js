@@ -6,7 +6,7 @@ module.exports = (sequelize) => {
   sequelize.define(
     "user",
     {
-      userId: {
+      id: {
         // FK en operacion, tarjeta, balance e historial
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -19,17 +19,17 @@ module.exports = (sequelize) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
-      nombre: {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastname: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      apellido: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      DNI: {
+      dni: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
@@ -37,25 +37,26 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      fechaNacimiento: {
+      birth: {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      telefono: {
+      phone: {
         type: DataTypes.STRING,
         allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
+        unique: true,
       },
-      contatos: {
+      contacts: {
         type: DataTypes.STRING,
         allowNull: true,
       },
     },
     {
-      timestamp: false,
+      timestamps: false,
     }
   );
 };
