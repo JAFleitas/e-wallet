@@ -13,7 +13,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@reduxjs/toolkit": "^1.7.2",
-    
+     
     "@types/react-router-dom": "^5.3.3",
     "e-wallet": "file:",
     "eslint-config-prettier": "^8.3.0",
