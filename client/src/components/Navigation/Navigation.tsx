@@ -24,12 +24,16 @@ import {
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
+import LoginButton from "../buttons/Login";
+import LogoutButton from "../buttons/Logout";
+import SignupButton from "../buttons/Signup";
+
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Navigation: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Box>
@@ -81,28 +85,8 @@ const Navigation: React.FC = () => {
           <Button onClick={toggleColorMode}>
             {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            onClick={() => loginWithRedirect()}
-          >
-            Sign In
-          </Button>
-          <Button
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"blue.400"}
-            onClick={() => loginWithRedirect({screen_hint: "signup"})}
-            _hover={{
-              bg: "blue.300",
-            }}
-          >
-            Sign Up
-          </Button>
+          { /* Renderiza Logout o Signin y Signup */}
+          { isAuthenticated ? <LogoutButton /> : <><LoginButton />  <SignupButton /></> }
         </Stack>
       </Flex>
 
