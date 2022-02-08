@@ -3,31 +3,31 @@ const { DataTypes } = require('sequelize');
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
   // defino el modelo
-  sequelize.define('operacion', {
+  sequelize.define('operation', {
     //FK en historial
-    operacionId: {
+    Id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
-    montoEnviado: {
+    valueSent: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    montoRecibido: {
+    valueReceived: {
       type: DataTypes.FLOAT,
       allowNull: true,
     },
-    descripcion: {
+    description: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    mensaje: {
+    message: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    fecha: {
+    date: {
       type: DataTypes.DATE,
       allowNull: true,
     },
