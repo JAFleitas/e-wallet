@@ -18,13 +18,21 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { name, username, email, password } = req.body;
         const passwordHash = yield bcrypt_1.default.hash(password, 10);
-        const newUser = yield user.create({
-            name,
-            username,
-            email,
-            password: passwordHash,
+        const [newUser, created] = yield user.findOrCreate({
+            where: { email },
+            defaults: {
+                name,
+                username,
+                password: passwordHash,
+            },
         });
-        return res.json(newUser);
+        if (created) {
+            return res.json(newUser);
+        }
+        if (newUser.username === username) {
+            return res.send("Username is already used!");
+        }
+        return res.send("There is already a user with that email!");
     }
     catch (error) {
         console.log(error);
