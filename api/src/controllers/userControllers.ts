@@ -9,19 +9,29 @@ const createUser = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { name, username, email, password } = req.body;
+    const { name, username, email, password, profilePic, lastname, birth } =
+      req.body;
+    const users = await user.findOne({ where: { username } });
+    if (users) {
+      return res.send("Username is already used!");
+    }
+
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // eslint-disable-next-line no-unused-vars
     const [newUser, created] = await user.findOrCreate({
       where: { email },
       defaults: {
         name,
+        lastname,
         username,
         password: passwordHash,
+        profilePic,
+        birth,
       },
     });
     if (created) {
-      return res.json(newUser);
+      return res.json("User created successfully!");
     }
 
     return res.send("There is already a user with that email!");
