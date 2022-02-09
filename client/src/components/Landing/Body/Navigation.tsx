@@ -5,9 +5,15 @@ import {
   IconButton,
   Button,
   Stack,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  VStack,
   Collapse,
   Icon,
-  Link,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -15,6 +21,9 @@ import {
   useBreakpointValue,
   useDisclosure,
   useColorMode,
+  Avatar,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -24,21 +33,23 @@ import {
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
-import LoginButton from "../buttons/Login";
-import LogoutButton from "../buttons/Logout";
-import SignupButton from "../buttons/Signup";
+import { FiBell, FiChevronDown } from "react-icons/fi";
+import LoginButton from "../../buttons/Login";
+import SignupButton from "../../buttons/Signup";
+import { Link } from "react-router-dom";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Navigation: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user, logout } =
+    useAuth0<{ picture: string; name: string }>();
 
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
@@ -48,6 +59,14 @@ const Navigation: React.FC = () => {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
+        <Text
+          bgGradient="linear(to-l, #7928CA, #FF0080)"
+          bgClip="text"
+          fontSize="2xl"
+          fontWeight="extrabold"
+        >
+          OneBit
+        </Text>
         <Flex
           flex={{ base: 1, md: "auto" }}
           ml={{ base: -2 }}
@@ -63,14 +82,6 @@ const Navigation: React.FC = () => {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={useColorModeValue("gray.800", "white")}
-          >
-            Logo
-          </Text>
-
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
           </Flex>
@@ -85,8 +96,72 @@ const Navigation: React.FC = () => {
           <Button onClick={toggleColorMode}>
             {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
-          { /* Renderiza Logout o Signin y Signup */}
-          { isAuthenticated ? <LogoutButton /> : <><LoginButton />  <SignupButton /></> }
+          {/* Renderiza Logout o Signin y Signup */}
+          {isAuthenticated ? (
+            <>
+              <HStack spacing={{ base: "0", md: "6" }}>
+                <IconButton
+                  size="lg"
+                  variant="ghost"
+                  aria-label="open menu"
+                  icon={<FiBell />}
+                />
+                <Flex alignItems={"center"}>
+                  <Menu>
+                    <MenuButton
+                      py={2}
+                      transition="all 0.3s"
+                      _focus={{ boxShadow: "none" }}
+                    >
+                      <HStack>
+                        <Avatar size={"sm"} src={user!.picture} />
+                        <VStack
+                          display={{ base: "none", md: "flex" }}
+                          alignItems="flex-start"
+                          spacing="1px"
+                          ml="2"
+                        >
+                          <Text fontSize="sm">{user!.name}</Text>
+                          <Text fontSize="xs" color="gray.600">
+                            Admin
+                          </Text>
+                        </VStack>
+                        <Box display={{ base: "none", md: "flex" }}>
+                          <FiChevronDown />
+                        </Box>
+                      </HStack>
+                    </MenuButton>
+                    <MenuList
+                      bg={useColorModeValue("white", "gray.900")}
+                      borderColor={useColorModeValue("gray.200", "gray.700")}
+                    >
+                      <Link to="/logged/home">
+                        <MenuItem>Profile</MenuItem>
+                      </Link>
+                      <Link to="/logged/Settings">
+                        <MenuItem>Settings</MenuItem>
+                      </Link>
+                      <Link to="/logged/Transactions">
+                        <MenuItem>Transactions</MenuItem>
+                      </Link>
+                      <MenuDivider />
+                      <MenuItem
+                        onClick={() =>
+                          logout({ returnTo: window.location.origin })
+                        }
+                      >
+                        Sign out
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Flex>
+              </HStack>
+            </>
+          ) : (
+            <>
+              <LoginButton /> <SignupButton />
+            </>
+          )}
         </Stack>
       </Flex>
 
@@ -108,7 +183,7 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
-              <Link
+              {/* <Link
                 p={2}
                 href={navItem.href ?? "#"}
                 fontSize={"sm"}
@@ -120,7 +195,7 @@ const DesktopNav = () => {
                 }}
               >
                 {navItem.label}
-              </Link>
+              </Link> */}
             </PopoverTrigger>
 
             {navItem.children && (
@@ -148,38 +223,38 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link
-      href={href}
-      role={"group"}
-      display={"block"}
-      p={2}
-      rounded={"md"}
-      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
-    >
-      <Stack direction={"row"} align={"center"}>
-        <Box>
-          <Text
-            transition={"all .3s ease"}
-            _groupHover={{ color: "pink.400" }}
-            fontWeight={500}
-          >
-            {label}
-          </Text>
-          <Text fontSize={"sm"}>{subLabel}</Text>
-        </Box>
-        <Flex
+    // <Link
+    //   href={href}
+    //   role={"group"}
+    //   display={"block"}
+    //   p={2}
+    //   rounded={"md"}
+    //   _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
+    // >
+    <Stack direction={"row"} align={"center"}>
+      <Box>
+        <Text
           transition={"all .3s ease"}
-          transform={"translateX(-10px)"}
-          opacity={0}
-          _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
-          justify={"flex-end"}
-          align={"center"}
-          flex={1}
+          _groupHover={{ color: "pink.400" }}
+          fontWeight={500}
         >
-          <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
-        </Flex>
-      </Stack>
-    </Link>
+          {label}
+        </Text>
+        <Text fontSize={"sm"}>{subLabel}</Text>
+      </Box>
+      <Flex
+        transition={"all .3s ease"}
+        transform={"translateX(-10px)"}
+        opacity={0}
+        _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
+        justify={"flex-end"}
+        align={"center"}
+        flex={1}
+      >
+        <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
+      </Flex>
+    </Stack>
+    // </Link>
   );
 };
 
@@ -204,7 +279,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     <Stack spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
-        as={Link}
+        //as={Link}
         href={href ?? "#"}
         justify={"space-between"}
         align={"center"}
@@ -238,12 +313,12 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {children &&
+          {/* {children &&
             children.map((child) => (
               <Link key={child.label} py={2} href={child.href}>
                 {child.label}
               </Link>
-            ))}
+            ))} */}
         </Stack>
       </Collapse>
     </Stack>
@@ -258,44 +333,44 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: "Inspiration",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
-  },
-  {
-    label: "Find Work",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
-  },
-  {
-    label: "Learn Design",
-    href: "#",
-  },
-  {
-    label: "Hire Designers",
-    href: "#",
-  },
+  // {
+  //   label: "Inspiration",
+  //   children: [
+  //     {
+  //       label: "Explore Design Work",
+  //       subLabel: "Trending Design to inspire you",
+  //       href: "#",
+  //     },
+  //     {
+  //       label: "New & Noteworthy",
+  //       subLabel: "Up-and-coming Designers",
+  //       href: "#",
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "Find Work",
+  //   children: [
+  //     {
+  //       label: "Job Board",
+  //       subLabel: "Find your dream design job",
+  //       href: "#",
+  //     },
+  //     {
+  //       label: "Freelance Projects",
+  //       subLabel: "An exclusive list for contract work",
+  //       href: "#",
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "Learn Design",
+  //   href: "#",
+  // },
+  // {
+  //   label: "Hire Designers",
+  //   href: "#",
+  // },
 ];
 
 export default Navigation;

@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
+ 
 
   return (
     <>
@@ -28,15 +29,15 @@ const Hero: React.FC = () => {
             fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
             lineHeight={"110%"}
           >
-            Make money from <br />
+            Use your money <br />
             <Text as={"span"} color={"blue.400"}>
-              your audience
+              as you want
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            Monetize your content by charging your most loyal readers and reward
-            them loyalty points. Give back to your loyal readers by granting
-            them access to your pre-releases and sneak-peaks.
+          We want the digital economy to be easy for you.
+          That's why we made OneBit a platform where you can
+          manage your funds seamlessly.
           </Text>
           <Stack
             direction={"column"}
@@ -45,7 +46,7 @@ const Hero: React.FC = () => {
             alignSelf={"center"}
             position={"relative"}
           >
-            <Link to="/homepage">
+            <Link to="/logged/home">
               <Button
                 colorScheme={"green"}
                 color={"white"}
@@ -58,9 +59,7 @@ const Hero: React.FC = () => {
                 Get Started
               </Button>
             </Link>
-            <Button variant={"link"} colorScheme={"blue"} size={"sm"}>
-              Learn more
-            </Button>
+            
             <Box>
               <Icon
                 as={Arrow}
@@ -78,7 +77,7 @@ const Hero: React.FC = () => {
                 top={"-15px"}
                 transform={"rotate(10deg)"}
               >
-                Starting at $15/mo
+                Try 30 days free!
               </Text>
             </Box>
           </Stack>
