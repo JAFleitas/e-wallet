@@ -53,7 +53,7 @@ modelCurrency(sequelize);
 modelHistory(sequelize);
 modelOperation(sequelize);
 modelCard(sequelize);
-const { user, balance, contact, currency, operation, card, history } =
+const { user, balance, contact, currency, operation, card, histori } = 
   sequelize.models;
 // relacion de las tablas
 user.hasMany(operation);
