@@ -30,6 +30,7 @@ const createUser = async (
         birth,
       },
     });
+    console.log(newUser);
     if (created) {
       return res.json("User created successfully!");
     }

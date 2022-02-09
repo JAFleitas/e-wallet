@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 // importo los routes
 import routerUser from "./routes/userRouter";
+import routerAccount from "./routes/accountRouter";
 
 const logger = require("morgan");
 const dotenv = require("dotenv");
@@ -18,5 +19,6 @@ app.use(cors());
 // routes
 
 app.use("/user", routerUser);
+app.use("/account", routerAccount);
 
 export default app;

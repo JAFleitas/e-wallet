@@ -6,7 +6,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 const { Sequelize, Op } = require("sequelize");
 // traemos los modelos
 const modelUser = require("../models/Users");
-const modelBalance = require("../models/Balance");
+const modelAccount = require("../models/Account");
 const modelContact = require("../models/Contact");
 const modelCurrency = require("../models/Currency");
 const modelHistory = require("../models/History");
@@ -25,35 +25,35 @@ const sequelize =
         pool: {
           max: 3,
           min: 1,
-          idle: 10000
+          idle: 10000,
         },
         dialectOptions: {
           ssl: {
             require: true,
             // Ref.: https://github.com/brianc/node-postgres/issues/2009
-            rejectUnauthorized: false
+            rejectUnauthorized: false,
           },
-          keepAlive: true
+          keepAlive: true,
         },
-        ssl: true
+        ssl: true,
       })
     : new Sequelize(
         `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
         {
           logging: false, // set to console.log to see the raw SQL queries
-          native: false // lets Sequelize know we can use pg-native for ~30% more speed
+          native: false, // lets Sequelize know we can use pg-native for ~30% more speed
         }
       );
 
 // inyeccion de modelos a sequelize
 modelUser(sequelize);
-modelBalance(sequelize);
+modelAccount(sequelize);
 modelContact(sequelize);
 modelCurrency(sequelize);
 modelHistory(sequelize);
 modelOperation(sequelize);
 modelCard(sequelize);
-const { user, balance, contact, currency, operation, card, history } =
+const { user, account, contact, currency, operation, card, history } =
   sequelize.models;
 // relacion de las tablas
 user.hasMany(operation);
@@ -62,11 +62,12 @@ user.belongsToMany(operation, { through: "history" });
 operation.belongsToMany(user, { through: "history" });
 user.hasMany(card);
 card.belongsTo(user);
-user.belongsToMany(currency, { through: "balance" });
-currency.belongsToMany(user, { through: "balance" });
+
+user.hasMany(account, { foreignKey: "user_account" });
+account.belongsTo(user, { foreignKey: "user_account" });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   sequelize, // para importart la conexión { conn } = require('./db.js');
-  Op // para poder importar los operadores tales como ilike en las consultas a la database
+  Op, // para poder importar los operadores tales como ilike en las consultas a la database
 };
