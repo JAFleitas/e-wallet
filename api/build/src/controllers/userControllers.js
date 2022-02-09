@@ -16,21 +16,27 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const { user } = require("../../db");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, username, email, password } = req.body;
+        const { name, username, email, password, profilePic, lastname, birth } = req.body;
+        const users = yield user.findOne({ where: { username } });
+        if (users) {
+            return res.send("Username is already used!");
+        }
         const passwordHash = yield bcrypt_1.default.hash(password, 10);
+        // eslint-disable-next-line no-unused-vars
         const [newUser, created] = yield user.findOrCreate({
             where: { email },
             defaults: {
                 name,
+                lastname,
                 username,
                 password: passwordHash,
+                profilePic,
+                birth,
             },
         });
+        console.log(newUser);
         if (created) {
-            return res.json(newUser);
-        }
-        if (newUser.username === username) {
-            return res.send("Username is already used!");
+            return res.json("User created successfully!");
         }
         return res.send("There is already a user with that email!");
     }
