@@ -5,11 +5,12 @@ import ProtectedRoute from "../auth/protected-route";
 // Add components below
 import Landing from "../components/Landing/Landing";
 import HomePage from "../components/Homepage/HomePage";
-import SideBarWithHeader from "../components/Logged/SimpleSideBar"
-import SendMoney from "../components/Logged/routesLogged/SendMoney"
-import Cards from "../components/Logged/routesLogged/Home"
-import Convert from "../components/Logged/routesLogged/Convert"
-import Settings from "../components/Logged/routesLogged/Settings"
+import SideBarWithHeader from "../components/Logged/SimpleSideBar";
+import SendMoney from "../components/Logged/routesLogged/SendMoney";
+import Cards from "../components/Logged/routesLogged/Home";
+import Convert from "../components/Logged/routesLogged/Convert";
+import Settings from "../components/Logged/routesLogged/Settings";
+import PageNotFound from "../components/PageNotFound/PageNotFound";
 
 const RoutesApp: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const RoutesApp: React.FC = () => {
          <Route path="/logged/settings" element={<SideBarWithHeader children={<Settings/>}/>}/>
           
           <Route path="/" element={<Landing />} />
+          <Route path="/pagenotfound" element={<PageNotFound />}/>
           <Route path="/homepage" element={<ProtectedRoute component={HomePage}/>} /> {/* esta ruta esta protegida a modo de ejemplo */}
         </Routes>
       </Auth0ProviderWithHistory>
